@@ -1,165 +1,224 @@
-# 🌦️ SmartCity Hub – Weather Service
+🌤️ SmartCity Hub – Weather Service
 
-> A professional microservice developed using **Java 17** and **Spring Boot 3** as part of the **SmartCity Hub** ecosystem. This service consumes the public **OpenWeather API** and exposes its own reactive REST endpoint, following modern best practices and clean architecture principles.
+A full-stack weather application built with Java Spring Boot (Reactive) and Angular, containerized with Docker and served via NGINX.
+This project consumes the OpenWeather API and is designed with clean architecture, scalability, and production readiness in mind.
 
----
+📌 Project Overview
 
-## 🚀 Project Overview
+SmartCity Hub – Weather Service is part of a modular Smart City ecosystem.
+It provides real-time weather information by city name, exposing a REST API and a modern frontend interface.
 
-**SmartCity Hub** is a portfolio-oriented initiative designed to simulate a real-world microservices ecosystem for smart city platforms.
+Key Goals
 
-The **Weather Service** is the first microservice in this ecosystem and its main goals are:
+Reactive backend using Spring WebFlux
 
-* Integrate with a real external API provider
-* Expose a clean, maintainable REST API
-* Apply **Clean Architecture** and separation of concerns
-* Use **reactive programming** correctly and intentionally
-* Serve as a solid, interview-ready portfolio project
+Clean separation of concerns (client, service, config, exceptions)
 
----
+Secure handling of API keys
 
-## 🧠 Tech Stack
+Dockerized full-stack application
 
-| Technology          | Version          |
-| ------------------- | ---------------- |
-| Java                | 17               |
-| Spring Boot         | 3.2.x            |
-| WebClient (WebFlux) | ✔                |
-| Maven               | Wrapper included |
-| OpenAPI / Swagger   | springdoc        |
-| IDE                 | IntelliJ IDEA    |
-| Version Control     | Git + GitHub     |
+Production-ready frontend served with NGINX
 
-> ⚠️ **Important:** WebFlux is used **only as an HTTP client** (`WebClient`). The server layer runs on **Spring MVC (Tomcat)**.
+Easy local setup with Docker Compose
 
----
+🧱 Tech Stack
+Backend
 
-## 🏗️ Architecture
+Java 21
 
-The project follows a **layered architecture**, inspired by **Clean Architecture** principles:
+Spring Boot 3
 
-```
-com.smartcity.weather
+Spring WebFlux
+
+WebClient
+
+Reactor
+
+Jackson
+
+Maven
+
+Frontend
+
+Angular (Standalone Components)
+
+TypeScript
+
+RxJS
+
+Angular Forms & HttpClient
+
+Infrastructure
+
+Docker
+
+Docker Compose
+
+NGINX
+
+OpenWeather API
+
+📂 Project Structure
+SmartCity-Hub/
 │
-├── controller   → REST API layer
-├── service      → Business logic
-├── client       → External API client (OpenWeather)
-├── dto          → Data Transfer Objects
-├── exception    → Domain and provider exceptions
-├── config       → Application and WebClient configuration
-└── WeatherServiceApplication
-```
+├── weather-service/           # Spring Boot backend
+│   ├── src/main/java
+│   ├── Dockerfile
+│   └── pom.xml
+│
+├── weather-frontend/          # Angular frontend
+│   ├── src/
+│   ├── Dockerfile
+│   └── angular.json
+│
+├── docker-compose.yml
+├── .gitignore
+└── README.md
 
-### Architecture Principles Applied
+🌐 Application Flow
 
-* Clear separation of responsibilities
-* No direct HTTP calls from the service layer
-* Reactive, non-blocking flows
-* Low coupling and high cohesion
-* Designed for scalability and future expansion
+User enters a city name in the Angular UI
 
----
+Angular calls the backend endpoint:
 
-## 🌐 Exposed REST API
-
-### Get weather by city
-
-```
 GET /api/weather/{city}
-```
 
-#### Example Request
 
-```
-GET /api/weather/Bogota
-```
+Spring Boot calls OpenWeather API using WebClient
 
-#### Successful Response (200 OK)
+Response is parsed and mapped to a DTO
 
-```json
-{
-  "city": "Bogotá",
-  "temperature": 18.5,
-  "humidity": 72,
-  "description": "partly cloudy"
-}
-```
+Data is returned to the frontend
 
----
+Angular displays the weather data
 
-## 🔗 External API Integration
+🔐 API Key Management (Important)
 
-* **Provider:** OpenWeather
-* **Protocol:** REST
-* **Client:** Spring WebClient (reactive)
+⚠️ Security Notice
 
-All communication with the external provider is encapsulated inside the `WeatherClient` class, ensuring a clean separation between infrastructure and business logic.
+The OpenWeather API key is required to run this application.
 
----
+The API key is never hardcoded
 
-## ⚠️ Error Handling
+It is injected via environment variables
 
-The service gracefully handles common provider and HTTP errors, including:
+This prevents accidental exposure in Git repositories
 
-* Invalid or missing API key
-* City not found
-* Too many requests (rate limiting)
-* External provider failures (5xx errors)
+⚠️ This API key is exposed ONLY for application runtime usage.
+As a developer, I am fully aware that API keys must never be committed to version control.
 
-Each case is mapped to a **domain-specific exception**, making the system easier to maintain and extend.
+⚙️ Environment Configuration
+Backend Environment Variable
+OPENWEATHER_API_KEY=your_api_key_here
 
----
 
-## 🔐 API Key Security
+Spring Boot reads it via:
 
-The OpenWeather API key:
+openweather.api.key=${OPENWEATHER_API_KEY}
 
-* ❌ Is **never committed** to the repository
-* ✔ Is injected via configuration files or environment variables
+🐳 Docker & Docker Compose
+Backend Dockerfile (Spring Boot)
 
-### Example configuration
+Multi-stage build
 
-```yaml
-openweather:
-  api:
-    key: ${OPENWEATHER_API_KEY}
-```
+Maven build stage
 
-📌 **Security & Ethics Note**
+Lightweight JRE runtime image
 
-> This API key is used strictly for educational and development purposes. As a developer, I am fully aware that **sensitive credentials must never be exposed in source code or public repositories**.
+Frontend Dockerfile (Angular + NGINX)
 
----
+Angular production build
 
-## 📦 Current Project Status
+Static files served by NGINX
 
-✔ Project builds successfully
-✔ Reactive WebClient configured and working
-✔ REST endpoint operational
-✔ External API fully integrated
-✔ Clean architecture established
+No Angular dev server in production
 
----
+▶️ How to Run the Project (Recommended)
+Prerequisites
 
-## 🛣️ Roadmap / Next Steps
+Docker
 
-* [ ] Input validation using `@Valid`
-* [ ] Full Swagger / OpenAPI documentation
-* [ ] Global exception handling (`@ControllerAdvice`)
-* [ ] Unit and integration tests
-* [ ] Dockerization (Dockerfile & docker-compose)
-* [ ] Basic security (API Gateway / authentication)
-* [ ] Integration with additional SmartCity Hub microservices
+Docker Compose
 
----
+1️⃣ Clone the repository
+git clone https://github.com/your-username/SmartCity-Hub.git
+cd SmartCity-Hub
 
-## 👨‍💻 Author
+2️⃣ Set the API key
 
-**Daniel López**
+Create an environment variable:
+
+Windows (PowerShell)
+
+$env:OPENWEATHER_API_KEY="your_api_key_here"
+
+
+Linux / macOS
+
+export OPENWEATHER_API_KEY=your_api_key_here
+
+3️⃣ Build and run everything
+docker-compose up --build
+
+4️⃣ Access the application
+Service	URL
+Frontend (Angular + NGINX)	http://localhost
+
+Backend API	http://localhost/api/weather/{city}
+
+Example:
+
+http://localhost/api/weather/Bogota
+
+🔁 CORS Configuration
+
+CORS is explicitly configured to allow frontend access:
+
+.allowedOrigins("http://localhost")
+.allowedMethods("GET")
+
+
+This ensures secure communication between Angular and Spring Boot.
+
+🧪 Testing
+
+Unit tests are implemented for the service layer
+
+Reactive behavior is validated
+
+Tests are intentionally excluded from the Docker build (-DskipTests)
+
+Can be enabled locally if needed
+
+🧠 Design Decisions
+
+Reactive stack chosen for scalability
+
+WebClient instead of RestTemplate (deprecated)
+
+Standalone Angular components for modern Angular architecture
+
+NGINX used for production-grade frontend serving
+
+Docker Compose simplifies orchestration
+
+🚀 Future Improvements
+
+Add CI/CD pipeline
+
+Deploy to Railway / Render / Fly.io
+
+Add HTTPS with reverse proxy
+
+Implement caching
+
+Improve UI styling
+
+Add monitoring & logging
+
+👨‍💻 Author
+
+Daniel Leonardo López Valderrama
 Software Developer
-
-📌 This project was developed for **educational, professional, and portfolio** purposes.
-
----
-
-⭐ If you find this project interesting or useful, feel free to give it a star on GitHub!
+Java • Spring Boot • Angular • Docker
