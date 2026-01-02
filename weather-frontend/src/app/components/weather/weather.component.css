@@ -1,0 +1,139 @@
+/* --- Global Theme Variables / Variables Globales del Tema --- */
+:host {
+  /* Modern palette using CSS variables for easy maintenance */
+  /* Paleta moderna usando variables CSS para facilitar el mantenimiento */
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --glass-bg: rgba(255, 255, 255, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --text-color: #ffffff;
+}
+
+.main-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--primary-gradient);
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  padding: 20px;
+}
+
+/* --- Glassmorphism Container / Contenedor con Efecto Cristal --- */
+.weather-container {
+  width: 100%;
+  max-width: 450px;
+  background: var(--glass-bg);
+  /* Backdrop-filter provides the frosted glass effect (Standard & Webkit for compatibility) */
+  /* Backdrop-filter proporciona el efecto de cristal esmerilado (Estándar y Webkit para compatibilidad) */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 40px;
+  color: var(--text-color);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  text-align: center;
+}
+
+.search-box {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+input {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  outline: none;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+button {
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  background: #ffffff;
+  color: #764ba2;
+  font-weight: bold;
+  cursor: pointer;
+  /* Smooth scale transition for better UX */
+  /* Transición de escala suave para una mejor experiencia de usuario */
+  transition: transform 0.2s ease-in-out;
+}
+
+button:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* --- Weather Content / Contenido del Clima --- */
+.weather-card {
+  margin-top: 30px;
+  /* Entrance animation to make the UI feel dynamic */
+  /* Animación de entrada para que la interfaz se sienta dinámica */
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+.temp-big {
+  font-size: 5rem;
+  font-weight: 800;
+  margin: 10px 0;
+}
+
+.temp-big span {
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+.extra-info {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Animations / Animaciones --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(118, 75, 162, 0.3);
+  border-radius: 50%;
+  border-top-color: #764ba2;
+  /* Infinite rotation for loading state */
+  /* Rotación infinita para el estado de carga */
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./weather-service
+    container_name: weather-backend
+    ports:
+      - "8090:8080"
+    environment:
+      - OPENWEATHER_API_KEY=c68abd6ad95742e310d7b473a0e27cc1
+
+  frontend:
+    build: ./weather-frontend
+    container_name: weather-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend

@@ -1,0 +1,54 @@
+<div class="main-wrapper">
+  <div class="weather-container">
+    <header>
+      <h1><span class="icon">🌤️</span>City Weather</h1>
+      <p class="subtitle">Consulta el clima en tiempo real</p>
+    </header>
+
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="city"
+        placeholder="Ej: Madrid, Buenos Aires..."
+        (keyup.enter)="searchWeather()"
+        [disabled]="loading"
+      />
+
+      <button (click)="searchWeather()" [disabled]="loading || !city.trim()">
+        <span *ngIf="!loading">Buscar</span>
+        <div *ngIf="loading" class="spinner"></div>
+      </button>
+    </div>
+
+    <div class="status-area">
+      <p class="loading-msg" *ngIf="loading">Obteniendo datos...</p>
+      <p class="error-msg" *ngIf="error && !loading">⚠️ {{ error }}</p>
+    </div>
+
+    <div class="weather-card" *ngIf="weatherData && !loading">
+      <div class="city-info">
+        <h2>{{ weatherData.city }}</h2>
+        <p class="desc">{{ weatherData.description }}</p>
+      </div>
+
+      <div class="main-stats">
+        <div class="temp-big">{{ weatherData.temperature }}<span>°C</span></div>
+      </div>
+
+      <div class="extra-info">
+        <div class="info-item">
+          <span class="label">💧 Humedad</span>
+          <span class="value">{{ weatherData.humidity }}%</span>
+        </div>
+        <div class="info-item">
+          <span class="label">☁️ Nubes</span>
+          <span class="value">Cubierto</span>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2025 Desarrollado por Daniel Lopez</p>
+    </footer>
+  </div>
+</div>
