@@ -1,224 +1,78 @@
-🌤️ SmartCity Hub – Weather Service
+# 🌤️ SmartCity Hub – Weather Service
 
-A full-stack weather application built with Java Spring Boot (Reactive) and Angular, containerized with Docker and served via NGINX.
-This project consumes the OpenWeather API and is designed with clean architecture, scalability, and production readiness in mind.
+Una aplicación de clima **Full-Stack** de alto rendimiento construida con **Java Spring Boot (Reactive)** y **Angular**, completamente containerizada con **Docker** y servida mediante **NGINX**.
 
-📌 Project Overview
+Este proyecto consume la API de OpenWeather y está diseñado siguiendo principios de arquitectura limpia, escalabilidad y preparación para entornos de producción.
 
-SmartCity Hub – Weather Service is part of a modular Smart City ecosystem.
-It provides real-time weather information by city name, exposing a REST API and a modern frontend interface.
+---
 
-Key Goals
+## 📌 Descripción General
 
-Reactive backend using Spring WebFlux
+**SmartCity Hub – Weather Service** es parte de un ecosistema modular de Ciudad Inteligente. Proporciona información meteorológica en tiempo real mediante una interfaz moderna y una API REST robusta.
 
-Clean separation of concerns (client, service, config, exceptions)
+### Objetivos Clave
+* **Backend Reactivo:** Uso de Spring WebFlux para manejo eficiente de hilos y escalabilidad.
+* **Arquitectura Limpia:** Separación clara de responsabilidades (Client, Service, Config, Exceptions).
+* **Seguridad:** Manejo de llaves de API mediante variables de entorno para evitar filtraciones.
+* **Despliegue Moderno:** Uso de Docker Compose y NGINX para un entorno listo para producción.
 
-Secure handling of API keys
+---
 
-Dockerized full-stack application
+## 🧱 Tech Stack
 
-Production-ready frontend served with NGINX
+### **Backend**
+* **Java 21** & **Spring Boot 3**
+* **Spring WebFlux** (Programación Reactiva)
+* **WebClient** (Cliente HTTP no bloqueante)
+* **Maven** (Gestión de dependencias)
 
-Easy local setup with Docker Compose
+### **Frontend**
+* **Angular** (Standalone Components)
+* **TypeScript** & **RxJS**
+* **Bootstrap / CSS** (UI Moderna)
 
-🧱 Tech Stack
-Backend
+### **Infraestructura**
+* **Docker & Docker Compose**
+* **NGINX** (Servidor web y Proxy inverso)
+* **OpenWeather API** (Fuente de datos externa)
 
-Java 21
+---
+# 🌐 Flujo de la Aplicación
+Entrada: El usuario ingresa el nombre de una ciudad en la UI de Angular.Petición: Angular realiza una petición al backend: GET /api/weather/{city}.Procesamiento: El backend consulta la API de OpenWeather de forma reactiva.Respuesta: Los datos se mapean a un DTO y se envían de vuelta al cliente.Visualización: Angular muestra la información climática actualizada.🔐 Manejo de API Keys (Seguridad)[!IMPORTANT]Se requiere una API Key de OpenWeather para que la aplicación funcione.Para garantizar la seguridad y evitar subir credenciales al repositorio:La API Key nunca se incluye en el código fuente.Se inyecta a través de variables de entorno en el contenedor.Configuración en Spring Boot:Propertiesopenweather.api.key=${OPENWEATHER_API_KEY}
+# ▶️ Cómo ejecutar el proyecto
+### Prerrequisitos: Docker y Docker Compose instalados.
+### Una cuenta en OpenWeather para obtener tu llave.
 
-Spring Boot 3
+1. Clonar el repositorioBashgit clone [https://github.com/daniloperama2006/SmartCity-Hub.git](https://github.com/daniloperama2006/SmartCity-Hub.git)
+2. cd SmartCity-Hub
+3. Configurar la API KeyDebes definir la variable de entorno en tu terminal antes de ejecutar Docker:Windows (PowerShell):PowerShell $env:OPENWEATHER_API_KEY="tu_api_key_aqui"
+Linux / macOS:Bashexport OPENWEATHER_API_KEY=tu_api_key_aqui (encontrarás una por defecto utilizada durante el desarrollo, puedes modificarla)
+4. Levantar con Docker ComposeBashdocker-compose up --build
+5. Acceder a la aplicaciónServicioURLFrontend (Interfaz) http://localhostBackend API http://localhost/api/weather/Bogota
 
-Spring WebFlux
 
-WebClient
+# 🧪 Decisiones de DiseñoStack Reactivo: 
+* Optimizado para manejar múltiples peticiones concurrentes con baja latencia.
+* NGINX para Frontend: Se utiliza NGINX para servir los archivos compilados de Angular, lo cual es más eficiente que usar el servidor de desarrollo en producción.Multi-stage Builds: Los Dockerfiles están optimizados para generar imágenes ligeras y seguras.
 
-Reactor
 
-Jackson
+## 📂 Estructura del Proyecto
 
-Maven
-
-Frontend
-
-Angular (Standalone Components)
-
-TypeScript
-
-RxJS
-
-Angular Forms & HttpClient
-
-Infrastructure
-
-Docker
-
-Docker Compose
-
-NGINX
-
-OpenWeather API
-
-📂 Project Structure
+```text
 SmartCity-Hub/
 │
-├── weather-service/           # Spring Boot backend
-│   ├── src/main/java
-│   ├── Dockerfile
+├── weather-service/           # Backend Spring Boot
+│   ├── src/main/java          # Lógica de negocio reactiva
+│   ├── Dockerfile             # Multi-stage build (Maven + JRE)
 │   └── pom.xml
 │
-├── weather-frontend/          # Angular frontend
-│   ├── src/
-│   ├── Dockerfile
+├── weather-frontend/          # Frontend Angular
+│   ├── src/                   # Componentes Standalone
+│   ├── Dockerfile             # Build de Angular + NGINX
 │   └── angular.json
 │
-├── docker-compose.yml
+├── docker-compose.yml         # Orquestación de contenedores
 ├── .gitignore
 └── README.md
 
-🌐 Application Flow
 
-User enters a city name in the Angular UI
-
-Angular calls the backend endpoint:
-
-GET /api/weather/{city}
-
-
-Spring Boot calls OpenWeather API using WebClient
-
-Response is parsed and mapped to a DTO
-
-Data is returned to the frontend
-
-Angular displays the weather data
-
-🔐 API Key Management (Important)
-
-⚠️ Security Notice
-
-The OpenWeather API key is required to run this application.
-
-The API key is never hardcoded
-
-It is injected via environment variables
-
-This prevents accidental exposure in Git repositories
-
-⚠️ This API key is exposed ONLY for application runtime usage.
-As a developer, I am fully aware that API keys must never be committed to version control.
-
-⚙️ Environment Configuration
-Backend Environment Variable
-OPENWEATHER_API_KEY=your_api_key_here
-
-
-Spring Boot reads it via:
-
-openweather.api.key=${OPENWEATHER_API_KEY}
-
-🐳 Docker & Docker Compose
-Backend Dockerfile (Spring Boot)
-
-Multi-stage build
-
-Maven build stage
-
-Lightweight JRE runtime image
-
-Frontend Dockerfile (Angular + NGINX)
-
-Angular production build
-
-Static files served by NGINX
-
-No Angular dev server in production
-
-▶️ How to Run the Project (Recommended)
-Prerequisites
-
-Docker
-
-Docker Compose
-
-1️⃣ Clone the repository
-git clone https://github.com/your-username/SmartCity-Hub.git
-cd SmartCity-Hub
-
-2️⃣ Set the API key
-
-Create an environment variable:
-
-Windows (PowerShell)
-
-$env:OPENWEATHER_API_KEY="your_api_key_here"
-
-
-Linux / macOS
-
-export OPENWEATHER_API_KEY=your_api_key_here
-
-3️⃣ Build and run everything
-docker-compose up --build
-
-4️⃣ Access the application
-Service	URL
-Frontend (Angular + NGINX)	http://localhost
-
-Backend API	http://localhost/api/weather/{city}
-
-Example:
-
-http://localhost/api/weather/Bogota
-
-🔁 CORS Configuration
-
-CORS is explicitly configured to allow frontend access:
-
-.allowedOrigins("http://localhost")
-.allowedMethods("GET")
-
-
-This ensures secure communication between Angular and Spring Boot.
-
-🧪 Testing
-
-Unit tests are implemented for the service layer
-
-Reactive behavior is validated
-
-Tests are intentionally excluded from the Docker build (-DskipTests)
-
-Can be enabled locally if needed
-
-🧠 Design Decisions
-
-Reactive stack chosen for scalability
-
-WebClient instead of RestTemplate (deprecated)
-
-Standalone Angular components for modern Angular architecture
-
-NGINX used for production-grade frontend serving
-
-Docker Compose simplifies orchestration
-
-🚀 Future Improvements
-
-Add CI/CD pipeline
-
-Deploy to Railway / Render / Fly.io
-
-Add HTTPS with reverse proxy
-
-Implement caching
-
-Improve UI styling
-
-Add monitoring & logging
-
-👨‍💻 Author
-
-Daniel Leonardo López Valderrama
-Software Developer
-Java • Spring Boot • Angular • Docker
